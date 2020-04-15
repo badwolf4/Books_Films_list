@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Books Films list</string>
+    <string name="books_button">Books</string>
+    <string name="films_button">Films</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+</resources>
