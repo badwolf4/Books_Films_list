@@ -105,7 +105,7 @@ class BooksFragmet : onBookItemClickListener, Fragment() {
     ): View?{
         val view: View = inflater.inflate(R.layout.books_fragmet, container, false)
         comunicator = activity as Comunicator
-        //
+        
         return view
     }
 
