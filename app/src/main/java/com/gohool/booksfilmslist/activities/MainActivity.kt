@@ -63,9 +63,20 @@ class MainActivity : AppCompatActivity(), Comunicator {
     override fun nextDetailedBookItemFragment(book: Book) {
         val transaction = manager.beginTransaction()
         val fragmet = BookItemDetailedFragment()
+        val bundle = Bundle()
+
+        bundle.putString("tittle", book.tittle)
+        bundle.putString("author",book.author)
+        bundle.putString("description",book.description)
+        bundle.putString("type",book.type)
+        bundle.putInt("priority",book.priority)
+
+        fragmet.arguments = bundle
+        //fragmet.onBookSet("Harry Potter")
         transaction.replace(R.id.main_fragment, fragmet)
         transaction.addToBackStack(null)
         transaction.commit()
+
     }
 
 }

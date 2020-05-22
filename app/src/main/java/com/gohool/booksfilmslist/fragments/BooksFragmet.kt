@@ -1,19 +1,16 @@
 package com.gohool.booksfilmslist.fragments
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gohool.booksfilmslist.Comunicator
 import com.gohool.booksfilmslist.adapters.BooksAdapter
 import com.gohool.booksfilmslist.R
 import com.gohool.booksfilmslist.adapters.onBookItemClickListener
 import com.gohool.booksfilmslist.classes.Book
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.books_fragmet.*
 
 
@@ -131,6 +128,7 @@ class BooksFragmet : onBookItemClickListener, Fragment() {
 
     override fun onItemClick(item: Book, position: Int) {
         comunicator.nextDetailedBookItemFragment(item)
+
     }
 
 }
