@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.gohool.booksfilmslist.Comunicator
 import com.gohool.booksfilmslist.R
 import com.gohool.booksfilmslist.adapters.FilmsAdapter
 import com.gohool.booksfilmslist.adapters.onFilmItemClickListener
@@ -15,7 +16,7 @@ import com.gohool.booksfilmslist.classes.Film
 import kotlinx.android.synthetic.main.films_fragment.*
 
 
-class FilmsFragment : Fragment(), onFilmItemClickListener {
+class FilmsFragment :  onFilmItemClickListener, Fragment() {
 
     val films = listOf(
         Film("Perfect Strangers", "drama", 2008, 5,"none"),
@@ -36,6 +37,8 @@ class FilmsFragment : Fragment(), onFilmItemClickListener {
 
     )
 
+    lateinit var comunicator: Comunicator
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         retainInstance = true
@@ -45,7 +48,9 @@ class FilmsFragment : Fragment(), onFilmItemClickListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.films_fragment, container, false)
+        val view: View = inflater.inflate(R.layout.films_fragment, container, false)
+        comunicator = activity as Comunicator
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -58,11 +63,13 @@ class FilmsFragment : Fragment(), onFilmItemClickListener {
     }
 
     companion object {
-        fun newInstance() = FilmsFragment()
+        fun newInstance() : FilmsFragment =
+            FilmsFragment()
     }
 
     override fun onItemClick(item: Film, position: Int) {
         Toast.makeText(context, item.tittle, Toast.LENGTH_LONG).show()
+        comunicator.nextDetailedFilmItemFragment(item)
     }
 
 }
