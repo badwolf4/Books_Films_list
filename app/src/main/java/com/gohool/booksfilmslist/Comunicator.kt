@@ -7,5 +7,5 @@ public interface Comunicator {
     fun nextFragment(id :Int)
     fun nextDetailedBookItemFragment(book : Book)
     fun nextDetailedFilmItemFragment(film : Film)
-
+//coment
 }
