@@ -7,4 +7,13 @@
     <string name="add_button">Add</string>
     <string name="find_button">Find</string>
 
+    <string name="tittle">Tittle</string>
+    <string name="author">Author</string>
+    <string name="type">Genre</string>
+    <string name="priority">Priority:</string>
+    <string name="descrioption">Descrioption</string>
+    <string name="start_value">0</string>
+    <string name="year">Year</string>
+    <string name="film_type">Type</string>
+
 </resources>

@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gohool.booksfilmslist.Comunicator
@@ -105,11 +107,13 @@ class BooksFragmet : onBookItemClickListener, Fragment() {
         val view: View = inflater.inflate(R.layout.books_fragmet, container, false)
         comunicator = activity as Comunicator
         view.addBookButton.setOnClickListener{
-            Toast.makeText(context, "Add pressed", Toast.LENGTH_LONG)
+            Toast.makeText(context, "Add pressed", Toast.LENGTH_LONG).show()
+            comunicator.nextFragment(R.id.addBookButton)
         }
         view.findBookButton.setOnClickListener{
-            Toast.makeText(context, "Find pressed", Toast.LENGTH_LONG)
+            Toast.makeText(context, "Find pressed", Toast.LENGTH_LONG).show()
         }
+
         return view
     }
 

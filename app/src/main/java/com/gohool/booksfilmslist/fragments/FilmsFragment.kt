@@ -14,6 +14,7 @@ import com.gohool.booksfilmslist.adapters.FilmsAdapter
 import com.gohool.booksfilmslist.adapters.onFilmItemClickListener
 import com.gohool.booksfilmslist.classes.Film
 import kotlinx.android.synthetic.main.films_fragment.*
+import kotlinx.android.synthetic.main.films_fragment.view.*
 
 
 class FilmsFragment :  onFilmItemClickListener, Fragment() {
@@ -50,6 +51,15 @@ class FilmsFragment :  onFilmItemClickListener, Fragment() {
     ): View? {
         val view: View = inflater.inflate(R.layout.films_fragment, container, false)
         comunicator = activity as Comunicator
+
+        view.addFilmButton.setOnClickListener {
+            Toast.makeText(context, "Add pressed", Toast.LENGTH_LONG).show()
+            comunicator.nextFragment(R.id.addFilmButton)
+        }
+
+        view.findFilmButton.setOnClickListener {
+            Toast.makeText(context, "Find pressed", Toast.LENGTH_LONG).show()
+        }
         return view
     }
 

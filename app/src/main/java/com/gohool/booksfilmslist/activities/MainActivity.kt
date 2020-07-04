@@ -18,6 +18,8 @@ class MainActivity : AppCompatActivity(), Comunicator {
         {
             R.id.filmsButton -> showFilmsFragment()
             R.id.booksButton -> showBooksFragment()
+            R.id.addBookButton -> showAddBookFragment()
+            R.id.addFilmButton -> showAddFilmFragment()
         }
     }
 
@@ -53,6 +55,23 @@ class MainActivity : AppCompatActivity(), Comunicator {
     {
         val transaction = manager.beginTransaction()
         val fragmet = FilmsFragment()
+        transaction.replace(R.id.main_fragment, fragmet)
+        transaction.addToBackStack(null)
+        transaction.commit()
+    }
+
+    fun showAddBookFragment()
+    {
+        val transaction = manager.beginTransaction()
+        val fragmet = AddBookFragment()
+        transaction.replace(R.id.main_fragment, fragmet)
+        transaction.addToBackStack(null)
+        transaction.commit()
+    }
+    fun showAddFilmFragment()
+    {
+        val transaction = manager.beginTransaction()
+        val fragmet = AddFilmFragment()
         transaction.replace(R.id.main_fragment, fragmet)
         transaction.addToBackStack(null)
         transaction.commit()
