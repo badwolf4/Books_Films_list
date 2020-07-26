@@ -1,5 +1,6 @@
 package com.gohool.booksfilmslist.fragments
 
+import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -12,87 +13,20 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.gohool.booksfilmslist.Comunicator
 import com.gohool.booksfilmslist.adapters.BooksAdapter
 import com.gohool.booksfilmslist.R
+import com.gohool.booksfilmslist.adapters.BookDataBaseHelper
 import com.gohool.booksfilmslist.adapters.onBookItemClickListener
 import com.gohool.booksfilmslist.classes.Book
 import kotlinx.android.synthetic.main.books_fragmet.*
 import kotlinx.android.synthetic.main.books_fragmet.view.*
+import java.text.FieldPosition
 
 
 class BooksFragmet : onBookItemClickListener, Fragment() {
 
-    val books = listOf(
-        Book("Kult", "Autor", "Gatunek", 2, "none"),
-        Book(
-            "Sztuka milosci",
-            "Autor",
-            "Gatunek",
-            2,
-            "none"
-        ),
-        Book(
-            "13 reasons why",
-            "Autor",
-            "Gatunek",
-            2,
-            "none"
-        ),
-        Book(
-            "13 reasons why",
-            "Autor",
-            "Gatunek",
-            2,
-            "none"
-        ),
-        Book(
-            "13 reasons why",
-            "Autor",
-            "Gatunek",
-            2,
-            "none"
-        ),
-        Book(
-            "13 reasons why",
-            "Autor",
-            "Gatunek",
-            2,
-            "none"
-        ),
-        Book(
-            "13 reasons why",
-            "Autor",
-            "Gatunek",
-            2,
-            "none"
-        ),
-        Book(
-            "13 reasons why",
-            "Autor",
-            "Gatunek",
-            2,
-            "none"
-        ),
-        Book(
-            "13 reasons why",
-            "Autor",
-            "Gatunek",
-            2,
-            "none"
-        ),
-        Book(
-            "wo ist sinna",
-            "Autor",
-            "Gatunek",
-            2,
-            "none"
-        ),
-        Book("Tytul", "Autor", "Gatunek", 2,"none")
-
-    )
 
     lateinit var comunicator: Comunicator
+    lateinit var db : SQLiteDatabase
 
-
-    //val books = listOf<String>("Kult", "Sztuka milosci", "13 reasons why", "wo ist sinna")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -107,7 +41,6 @@ class BooksFragmet : onBookItemClickListener, Fragment() {
         val view: View = inflater.inflate(R.layout.books_fragmet, container, false)
         comunicator = activity as Comunicator
         view.addBookButton.setOnClickListener{
-            Toast.makeText(context, "Add pressed", Toast.LENGTH_LONG).show()
             comunicator.nextFragment(R.id.addBookButton)
         }
         view.findBookButton.setOnClickListener{
@@ -118,18 +51,26 @@ class BooksFragmet : onBookItemClickListener, Fragment() {
     }
 
 
-        //recyclerViewBooks.layoutManager = LinearLayoutManager(activity)
-
-        //recyclerViewBooks.adapter = BooksAdapter(books)
-
-        //return view
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         recycler_view_books.apply {
             layoutManager = LinearLayoutManager(activity)
-            adapter = BooksAdapter(books,this@BooksFragmet)
+            val dbHelper = BookDataBaseHelper(context)
+             db = dbHelper.writableDatabase
+            adapter = BooksAdapter(this@BooksFragmet, db)
+
+//            arguments?.getInt("position").let {
+//                var position = it
+//                if (it != null) {
+//                    recycler_view_books.removeViewAt(it)
+//
+//                }
+//            }
+
+
         }
+
     }
 
     companion object{
@@ -137,14 +78,35 @@ class BooksFragmet : onBookItemClickListener, Fragment() {
             BooksFragmet()
     }
 
-    override fun onItemClick(item: Book, position: Int) {
-        comunicator.nextDetailedBookItemFragment(item)
+    override fun onItemClick(book: Book, position: Int) {
+        val bundle = Bundle()
+
+
+        bundle.putString("tittle", book.tittle)
+        bundle.putString("author",book.author)
+        bundle.putString("description",book.description)
+        bundle.putString("type",book.type)
+        bundle.putInt("priority",book.priority)
+        bundle.putInt("bookId", position)
+
+
+        comunicator.nextDetailedBookItemFragment(bundle)
 
     }
 
+//    override fun onDestroy() {
+//        super.onDestroy()
+//        db.close()
+//    }
+
 }
 
+//list.remove(position);
+//recycler.removeViewAt(position);
+//mAdapter.notifyItemRemoved(position);
+//mAdapter.notifyItemRangeChanged(position, list.size());
 
+//mAdapter.notifyDataSetChanged();
 
 
 

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.Toast
 import com.gohool.booksfilmslist.Comunicator
 import com.gohool.booksfilmslist.R
+import com.gohool.booksfilmslist.adapters.BookDataBaseHelper
 import com.gohool.booksfilmslist.classes.Book
 import com.gohool.booksfilmslist.classes.Film
 import com.gohool.booksfilmslist.fragments.*
@@ -28,8 +29,10 @@ class MainActivity : AppCompatActivity(), Comunicator {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         Toast.makeText(applicationContext, "This is toast", Toast.LENGTH_SHORT).show()
-
         showStartFragment()
+
+        val bookDbHelper = BookDataBaseHelper(applicationContext)
+        val bookDb = bookDbHelper.writableDatabase
 
     }
 
@@ -63,7 +66,7 @@ class MainActivity : AppCompatActivity(), Comunicator {
     fun showAddBookFragment()
     {
         val transaction = manager.beginTransaction()
-        val fragmet = AddBookFragment()
+        val fragmet = BookEditFragment()
         transaction.replace(R.id.main_fragment, fragmet)
         transaction.addToBackStack(null)
         transaction.commit()
@@ -77,16 +80,16 @@ class MainActivity : AppCompatActivity(), Comunicator {
         transaction.commit()
     }
 
-    override fun nextDetailedBookItemFragment(book: Book) {
+    override fun nextDetailedBookItemFragment(bundle: Bundle) {
         val transaction = manager.beginTransaction()
         val fragment = BookItemDetailedFragment()
-        val bundle = Bundle()
-
-        bundle.putString("tittle", book.tittle)
-        bundle.putString("author",book.author)
-        bundle.putString("description",book.description)
-        bundle.putString("type",book.type)
-        bundle.putInt("priority",book.priority)
+//        val bundle = Bundle()
+//
+//        bundle.putString("tittle", book.tittle)
+//        bundle.putString("author",book.author)
+//        bundle.putString("description",book.description)
+//        bundle.putString("type",book.type)
+//        bundle.putInt("priority",book.priority)
 
         fragment.arguments = bundle
         //fragmet.onBookSet("Harry Potter")
@@ -112,6 +115,28 @@ class MainActivity : AppCompatActivity(), Comunicator {
         transaction.addToBackStack(null)
         transaction.commit()
 
+    }
+
+    override fun nextEditFragment(bundle: Bundle) {
+        val transaction = manager.beginTransaction()
+        val fragment = BookEditFragment()
+        //Toast.makeText(applicationContext, "Book to edit: "+ bundle.getInt("bookId"),Toast.LENGTH_SHORT).show()
+        fragment.arguments = bundle
+        //fragmet.onBookSet("Harry Potter")
+        transaction.replace(R.id.main_fragment, fragment)
+        transaction.addToBackStack(null)
+        transaction.commit()
+    }
+
+    override fun nextDeletedBook(position: Int) {
+        val transaction = manager.beginTransaction()
+        val fragment = BooksFragmet()
+        val bundle = Bundle()
+        bundle.putInt("position", position)
+        fragment.arguments = bundle
+        transaction.replace(R.id.main_fragment, fragment)
+        transaction.addToBackStack(null)
+        transaction.commit()
     }
 
 }

@@ -16,4 +16,9 @@
     <string name="year">Year</string>
     <string name="film_type">Type</string>
 
+    <string name="edit">Edit</string>
+    <string name="save">Save</string>
+    <string name="delete">Delete</string>
+    <string name="copy">Copy</string>
+
 </resources>

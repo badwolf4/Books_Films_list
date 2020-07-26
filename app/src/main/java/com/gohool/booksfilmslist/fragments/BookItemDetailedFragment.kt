@@ -1,28 +1,35 @@
 package com.gohool.booksfilmslist.fragments
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.provider.BaseColumns
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
+import com.gohool.booksfilmslist.Comunicator
 
 import com.gohool.booksfilmslist.R
+import com.gohool.booksfilmslist.adapters.BookDataBaseHelper
+import com.gohool.booksfilmslist.adapters.TableInfo
 import com.gohool.booksfilmslist.classes.Book
 import kotlinx.android.synthetic.*
 import kotlinx.android.synthetic.main.fragment_book_item_detailed.*
 
 
 class BookItemDetailedFragment : Fragment() {
-//    private lateinit var tittle: String
-//    fun onBookSet(book : String)
-//    {
-//        tittle = book
-//    }
 
+    lateinit var comunicator : Comunicator
+    var bundle : Bundle? = Bundle()
+    var tittle : String? = null
+    var author : String? = null
+    var type : String? = null
+    var description : String? = null
+    var priority : Int? = null
+    var bookId : Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setHasOptionsMenu(true)
         super.onCreate(savedInstanceState)
 
     }
@@ -34,11 +41,17 @@ class BookItemDetailedFragment : Fragment() {
         // Inflate the layout for this fragment
         val view : View = inflater.inflate(R.layout.fragment_book_item_detailed, container, false)
 
-        var tittle = arguments?.getString("tittle")
-        var author = arguments?.getString("author")
-        var type = arguments?.getString("type")
-        var description = arguments?.getString("description")
-        var priority = arguments?.getInt("priority")
+        comunicator = activity as Comunicator
+
+
+
+        tittle = arguments?.getString("tittle")
+        author = arguments?.getString("author")
+        type = arguments?.getString("type")
+        description = arguments?.getString("description")
+        priority = arguments?.getInt("priority")
+        bookId = arguments?.getInt("bookId")
+
 
         val bookTittle = view.findViewById<TextView>(R.id.tittle_detailed)
         val bookAuthor = view.findViewById<TextView>(R.id.author_detailed)
@@ -50,16 +63,45 @@ class BookItemDetailedFragment : Fragment() {
         bookAuthor.setText(author)
         bookType.setText(type)
         bookDescription.setText(description)
-        bookPriority.setText(priority?.let { it.toString() })
-        Toast.makeText(context, tittle, Toast.LENGTH_SHORT).show()
+        bookPriority.setText(priority?.toString())
+        //Toast.makeText(context, tittle, Toast.LENGTH_SHORT).show()
         return view
     }
 
-//    override fun onStart() {
-//        super.onStart()
-//        bookTittle?.setText(tittle)
-//    }
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.book_detailed_option_menu,menu)
+        super.onCreateOptionsMenu(menu, inflater)
+
+    }
 
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val bundle = Bundle()
+        val id = item.itemId
+        when(id){
+            R.id.edit_button-> {
+                bundle.putString("tittle", tittle)
+                bundle.putString("author", author)
+                bundle.putString("type", type)
+                bundle.putString("description", description)
+                bookId?.let { bundle.putInt("bookId", it) }
+                priority?.let { bundle.putInt("priority", it) }
+
+                comunicator.nextEditFragment(bundle)
+                //Toast.makeText(activity, "Edit pressed", Toast.LENGTH_SHORT).show()
+            }
+            R.id.delete_button->
+            {
+                val dbHelper = view?.context?.let { BookDataBaseHelper(it) }
+                val db = dbHelper?.writableDatabase
+                db?.delete(TableInfo.TABLE_NAME,BaseColumns._ID+"=?", arrayOf(bookId.toString()))
+                bookId?.let { comunicator.nextDeletedBook(it) }
+                db?.close()
+                //Toast.makeText(activity, "Delete pressed", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
 
 }

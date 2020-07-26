@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".fragments.AddBookFragment">
+    tools:context=".fragments.BookEditFragment">
 
     <EditText
         android:id="@+id/bookTittle"
@@ -89,10 +89,4 @@
         android:layout_height="wrap_content"
         />
 
-    <Button
-        android:id="@+id/add_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="25sp"
-        android:text="@string/add_button"/>
 </LinearLayout>
