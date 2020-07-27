@@ -65,12 +65,6 @@ class BookEditFragment : Fragment() {
             priority.text = it.toString()
         }
 
-
-        //id =arguments?.getInt("bookId")
-
-
-
-
         seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 priority.text = progress.toString()
@@ -87,41 +81,6 @@ class BookEditFragment : Fragment() {
 
         })
 
-
-//        val dbHelper = context?.let { BookDataBaseHelper(it) }
-//        val db = dbHelper!!.writableDatabase
-//
-//        view.add_button.setOnClickListener {
-//
-//            val tittle = view.bookTittle.text.toString()
-//            val author = view.bookAuthor.text.toString()
-//            val type = view.bookType.text.toString()
-//            val priorityValue = seekBar.progress
-//            val description = view.bookDescription.text.toString()
-//
-//            if(!tittle.isNullOrEmpty() || !author.isNullOrEmpty() || !type.isNullOrEmpty() || !description.isNullOrEmpty())
-//            {
-//                val value = ContentValues()
-//
-//                value.put(TableInfo.TABLE_COLUMN_TITTLE, tittle)
-//                value.put(TableInfo.TABLE_COLUMN_AUTHOR, author)
-//                value.put(TableInfo.TABLE_COLUMN_TYPE, type)
-//                value.put(TableInfo.TABLE_COLUMN_PRIORITY, priorityValue)
-//                value.put(TableInfo.TABLE_COLUMN_DESCRIPTION, description)
-//
-//                db.insertOrThrow(TableInfo.TABLE_NAME, null, value)
-//                Log.d("MyLog", "Book inserted to database")
-//                Toast.makeText(context,"Book added", Toast.LENGTH_SHORT).show()
-//            }
-//            else{
-//                Toast.makeText(context, "Book with empty fields can not be added", Toast.LENGTH_LONG).show()
-//            }
-//
-//            comunicator.nextFragment(R.id.booksButton)
-//
-//        }
-
-
         return view
     }
 
@@ -131,8 +90,6 @@ class BookEditFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val dbHelper = context?.let { BookDataBaseHelper(it) }
-        val db = dbHelper!!.writableDatabase
 
             val tittle = view?.bookTittle?.text.toString()
             val author = view?.bookAuthor?.text.toString()
@@ -150,34 +107,20 @@ class BookEditFragment : Fragment() {
                 value.put(TableInfo.TABLE_COLUMN_PRIORITY, priorityValue)
                 value.put(TableInfo.TABLE_COLUMN_DESCRIPTION, description)
 
-                if(id!=null)
-                {
-                    db.update(TableInfo.TABLE_NAME, value, BaseColumns._ID+"=?", arrayOf(id.toString()))
-                    Log.d("MyLog", "Book updated in database")
-                    Toast.makeText(context, "Book updated", Toast.LENGTH_SHORT).show()
+                if(id!=null) {
+                    BooksFragmet.dbHelper.updateBook(value, id!!)
                 }
-                else
-                {
-                    db.insertOrThrow(TableInfo.TABLE_NAME, null, value)
-                    Log.d("MyLog", "Book inserted to database")
-                    Toast.makeText(context,"Book added", Toast.LENGTH_SHORT).show()
+                else {
+                    BooksFragmet.dbHelper.insertBook(value)
                 }
 
             }
             else{
                 Toast.makeText(context, "Book with empty fields can not be added", Toast.LENGTH_LONG).show()
             }
-
             comunicator.nextFragment(R.id.booksButton)
 
-
-        //Toast.makeText(activity, "Save pressed", Toast.LENGTH_SHORT).show()
         return super.onOptionsItemSelected(item)
     }
 
 }
-//uodate table row
-//val value = ContentValue()
-//value.put("tittle", tittle)
-//...
-//db.update(TableInfo.TABLE_NAME, value, BaseColumns._ID + "=?", arrayOf(intent?.getStringExtra("ID"))

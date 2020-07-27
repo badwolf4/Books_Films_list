@@ -1,8 +1,11 @@
 package com.gohool.booksfilmslist.fragments
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.provider.BaseColumns
+import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.TextView
@@ -11,8 +14,10 @@ import com.gohool.booksfilmslist.Comunicator
 
 import com.gohool.booksfilmslist.R
 import com.gohool.booksfilmslist.adapters.BookDataBaseHelper
+import com.gohool.booksfilmslist.adapters.BooksAdapter
 import com.gohool.booksfilmslist.adapters.TableInfo
 import com.gohool.booksfilmslist.classes.Book
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.*
 import kotlinx.android.synthetic.main.fragment_book_item_detailed.*
 
@@ -38,12 +43,9 @@ class BookItemDetailedFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         val view : View = inflater.inflate(R.layout.fragment_book_item_detailed, container, false)
 
         comunicator = activity as Comunicator
-
-
 
         tittle = arguments?.getString("tittle")
         author = arguments?.getString("author")
@@ -51,7 +53,6 @@ class BookItemDetailedFragment : Fragment() {
         description = arguments?.getString("description")
         priority = arguments?.getInt("priority")
         bookId = arguments?.getInt("bookId")
-
 
         val bookTittle = view.findViewById<TextView>(R.id.tittle_detailed)
         val bookAuthor = view.findViewById<TextView>(R.id.author_detailed)
@@ -64,7 +65,6 @@ class BookItemDetailedFragment : Fragment() {
         bookType.setText(type)
         bookDescription.setText(description)
         bookPriority.setText(priority?.toString())
-        //Toast.makeText(context, tittle, Toast.LENGTH_SHORT).show()
         return view
     }
 
@@ -88,16 +88,19 @@ class BookItemDetailedFragment : Fragment() {
                 priority?.let { bundle.putInt("priority", it) }
 
                 comunicator.nextEditFragment(bundle)
-                //Toast.makeText(activity, "Edit pressed", Toast.LENGTH_SHORT).show()
             }
             R.id.delete_button->
             {
-                val dbHelper = view?.context?.let { BookDataBaseHelper(it) }
-                val db = dbHelper?.writableDatabase
-                db?.delete(TableInfo.TABLE_NAME,BaseColumns._ID+"=?", arrayOf(bookId.toString()))
-                bookId?.let { comunicator.nextDeletedBook(it) }
-                db?.close()
-                //Toast.makeText(activity, "Delete pressed", Toast.LENGTH_SHORT).show()
+                var alertDialog  = AlertDialog.Builder(context).setTitle("Warning")
+                    .setMessage("Are you sure that you want to delete ${tittle}?")
+                    .setPositiveButton("Yes", DialogInterface.OnClickListener{ dialog,which ->
+                        tittle?.let { BooksFragmet.dbHelper.deleteBook(it) }
+                        comunicator.nextFragment(R.id.booksButton)
+
+
+            }).setNegativeButton("No", DialogInterface.OnClickListener { dialog, which -> })
+                    .setIcon(R.drawable.ic_baseline_warning_24)
+                    .show()
             }
         }
 

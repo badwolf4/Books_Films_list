@@ -34,36 +34,45 @@ class BookViewHolder(inflater:LayoutInflater, parent: ViewGroup) :RecyclerView.V
 
             }
 
-    fun bind(posiotion : Int, action: onBookItemClickListener, db:SQLiteDatabase ){
+    fun bind(action: onBookItemClickListener, book : Book){
+        Log.d("MyLog", "Book tittle: ${book.tittle}")
+//        val cursor = db.query(TableInfo.TABLE_NAME, null, BaseColumns._ID + "=?",
+//            arrayOf(adapterPosition.plus(1).toString()),
+//            null, null, null)
+//        if(cursor.moveToFirst()){
+//            if(!cursor.getString(1).isNullOrEmpty()
+//                && !cursor.getString(2).isNullOrEmpty()
+//                && !cursor.getString(3).isNullOrEmpty()
+//                && !cursor.getString(4).isNullOrEmpty()
+//                && !cursor.getString(5).isNullOrEmpty())
+//            {
+//                val tittle = cursor.getString(1)
+//                val author = cursor.getString(2)
+//                val type = cursor.getString(3)
+//                val priority = cursor.getInt(4)
+//                val description = cursor.getString(5)
+//
+//                Log.d("MyLog", "Tittle: ${tittle}")
+//                mTittleView?.text = tittle
+//                mAuthorView?.text = author
+//                mPriorityView?.text = priority.toString()
+//
+//                Log.d("MyLog", "Book Item Listed")
+//                val book = Book(tittle, author, type, priority, description)
+//                itemView.setOnClickListener{
+//                    action.onItemClick(book,adapterPosition.plus(1))
+//                }
+//            }
+
+                mTittleView?.text = book.tittle
+                mAuthorView?.text = book.author
+                mPriorityView?.text = book.priority.toString()
 
 
-        val cursor = db.query(TableInfo.TABLE_NAME, null, BaseColumns._ID + "=?",
-            arrayOf(adapterPosition.plus(1).toString()),
-            null, null, null)
-        if(cursor.moveToFirst()){
-            if(!cursor.getString(1).isNullOrEmpty()
-                && !cursor.getString(2).isNullOrEmpty()
-                && !cursor.getString(3).isNullOrEmpty()
-                && !cursor.getString(4).isNullOrEmpty()
-                && !cursor.getString(5).isNullOrEmpty())
-            {
-                val tittle = cursor.getString(1)
-                val author = cursor.getString(2)
-                val type = cursor.getString(3)
-                val priority = cursor.getInt(4)
-                val description = cursor.getString(5)
-
-                Log.d("MyLog", "Tittle: ${tittle}")
-                mTittleView?.text = tittle
-                mAuthorView?.text = author
-                mPriorityView?.text = priority.toString()
-
-                Log.d("MyLog", "Book Item Listed")
-                val book = Book(tittle, author, type, priority, description)
                 itemView.setOnClickListener{
                     action.onItemClick(book,adapterPosition.plus(1))
                 }
-            }
+
 
 
         }
@@ -83,7 +92,7 @@ class BookViewHolder(inflater:LayoutInflater, parent: ViewGroup) :RecyclerView.V
 //        }
 
 
-    }
+
 
 
 

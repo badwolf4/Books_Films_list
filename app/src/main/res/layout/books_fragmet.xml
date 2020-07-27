@@ -22,16 +22,23 @@
             android:text="@string/find_button"
 
             />
-        <Button
-            android:id="@+id/addBookButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/add_button"
-            />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_books"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floating_add_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:backgroundTint="@color/colorPrimaryDark"
+            app:fabSize="normal"
+            android:src="@drawable/ic_baseline_add_24"/>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </LinearLayout>

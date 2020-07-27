@@ -25,7 +25,6 @@ class BooksFragmet : onBookItemClickListener, Fragment() {
 
 
     lateinit var comunicator: Comunicator
-    lateinit var db : SQLiteDatabase
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,13 +39,13 @@ class BooksFragmet : onBookItemClickListener, Fragment() {
     ): View?{
         val view: View = inflater.inflate(R.layout.books_fragmet, container, false)
         comunicator = activity as Comunicator
-        view.addBookButton.setOnClickListener{
-            comunicator.nextFragment(R.id.addBookButton)
-        }
+
         view.findBookButton.setOnClickListener{
             Toast.makeText(context, "Find pressed", Toast.LENGTH_LONG).show()
         }
-
+        view.floating_add_btn.setOnClickListener{
+            comunicator.nextFragment(R.id.floating_add_btn)
+        }
         return view
     }
 
@@ -54,28 +53,45 @@ class BooksFragmet : onBookItemClickListener, Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        dbHelper = BookDataBaseHelper(view.context)
+
+//        recycler_view_books.apply {
+//            layoutManager = LinearLayoutManager(activity)
+//            //val dbHelper = BookDataBaseHelper(context)
+//            val bookList = dbHelper.getBooks()
+//            adapter = BooksAdapter(this@BooksFragmet, bookList)
+//        }
+
+        viewBooks()
+//        arguments?.getInt("id").let{
+//            if (it != null) {
+//                Toast.makeText(context, "Book id: ${it.toString()}", Toast.LENGTH_SHORT)
+//                adapter.removeBook(it)
+//            }
+//        }
+    }
+
+    override fun onResume() {
+        viewBooks()
+        super.onResume()
+    }
+
+    private fun viewBooks(){
+        //val bookList = dbHelper.getBooks()
         recycler_view_books.apply {
             layoutManager = LinearLayoutManager(activity)
-            val dbHelper = BookDataBaseHelper(context)
-             db = dbHelper.writableDatabase
-            adapter = BooksAdapter(this@BooksFragmet, db)
-
-//            arguments?.getInt("position").let {
-//                var position = it
-//                if (it != null) {
-//                    recycler_view_books.removeViewAt(it)
-//
-//                }
-//            }
-
-
+            //val dbHelper = BookDataBaseHelper(context)
+            val bookList = dbHelper.getBooks()
+            adapter = BooksAdapter(this@BooksFragmet, bookList)
         }
-
     }
 
     companion object{
+        lateinit var adapter : BooksAdapter
+        lateinit var dbHelper: BookDataBaseHelper
         fun newInstance(): BooksFragmet =
             BooksFragmet()
+
     }
 
     override fun onItemClick(book: Book, position: Int) {
@@ -93,6 +109,9 @@ class BooksFragmet : onBookItemClickListener, Fragment() {
         comunicator.nextDetailedBookItemFragment(bundle)
 
     }
+
+
+
 
 //    override fun onDestroy() {
 //        super.onDestroy()

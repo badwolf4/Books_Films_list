@@ -9,6 +9,7 @@ import com.gohool.booksfilmslist.adapters.BookDataBaseHelper
 import com.gohool.booksfilmslist.classes.Book
 import com.gohool.booksfilmslist.classes.Film
 import com.gohool.booksfilmslist.fragments.*
+import kotlinx.android.synthetic.main.books_fragmet.view.*
 
 class MainActivity : AppCompatActivity(), Comunicator {
 
@@ -19,7 +20,7 @@ class MainActivity : AppCompatActivity(), Comunicator {
         {
             R.id.filmsButton -> showFilmsFragment()
             R.id.booksButton -> showBooksFragment()
-            R.id.addBookButton -> showAddBookFragment()
+            R.id.floating_add_btn -> showAddBookFragment()
             R.id.addFilmButton -> showAddFilmFragment()
         }
     }
