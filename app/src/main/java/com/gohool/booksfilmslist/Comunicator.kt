@@ -10,6 +10,4 @@ public interface Comunicator {
     fun nextDetailedFilmItemFragment(film : Film)
     fun nextEditFragment(bundle : Bundle)
     fun nextDeletedBook(position : Int)
-
-
 }
