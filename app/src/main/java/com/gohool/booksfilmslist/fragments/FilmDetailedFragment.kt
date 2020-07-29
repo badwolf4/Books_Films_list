@@ -13,7 +13,7 @@ import com.gohool.booksfilmslist.R
 /**
  * A simple [Fragment] subclass.
  */
-class FilmDetailed : Fragment() {
+class FilmDetailedFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

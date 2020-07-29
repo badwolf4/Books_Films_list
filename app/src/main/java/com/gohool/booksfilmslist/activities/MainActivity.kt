@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.widget.Toast
 import com.gohool.booksfilmslist.Comunicator
 import com.gohool.booksfilmslist.R
-import com.gohool.booksfilmslist.classes.Book
+import com.gohool.booksfilmslist.adapters.BookDataBaseHelper
 import com.gohool.booksfilmslist.classes.Film
 import com.gohool.booksfilmslist.fragments.*
 
@@ -18,6 +18,8 @@ class MainActivity : AppCompatActivity(), Comunicator {
         {
             R.id.filmsButton -> showFilmsFragment()
             R.id.booksButton -> showBooksFragment()
+            R.id.floating_add_btn -> showAddBookFragment()
+            R.id.addFilmButton -> showAddFilmFragment()
         }
     }
 
@@ -26,8 +28,10 @@ class MainActivity : AppCompatActivity(), Comunicator {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         Toast.makeText(applicationContext, "This is toast", Toast.LENGTH_SHORT).show()
-
         showStartFragment()
+
+        val bookDbHelper = BookDataBaseHelper(applicationContext)
+        val bookDb = bookDbHelper.writableDatabase
 
     }
 
@@ -58,16 +62,33 @@ class MainActivity : AppCompatActivity(), Comunicator {
         transaction.commit()
     }
 
-    override fun nextDetailedBookItemFragment(book: Book) {
+    fun showAddBookFragment()
+    {
         val transaction = manager.beginTransaction()
-        val fragment = BookItemDetailedFragment()
-        val bundle = Bundle()
+        val fragmet = BookEditFragment()
+        transaction.replace(R.id.main_fragment, fragmet)
+        transaction.addToBackStack(null)
+        transaction.commit()
+    }
+    fun showAddFilmFragment()
+    {
+        val transaction = manager.beginTransaction()
+        val fragmet = AddFilmFragment()
+        transaction.replace(R.id.main_fragment, fragmet)
+        transaction.addToBackStack(null)
+        transaction.commit()
+    }
 
-        bundle.putString("tittle", book.tittle)
-        bundle.putString("author",book.author)
-        bundle.putString("description",book.description)
-        bundle.putString("type",book.type)
-        bundle.putInt("priority",book.priority)
+    override fun nextDetailedBookItemFragment(bundle: Bundle) {
+        val transaction = manager.beginTransaction()
+        val fragment = BookDetailedFragment()
+//        val bundle = Bundle()
+//
+//        bundle.putString("tittle", book.tittle)
+//        bundle.putString("author",book.author)
+//        bundle.putString("description",book.description)
+//        bundle.putString("type",book.type)
+//        bundle.putInt("priority",book.priority)
 
         fragment.arguments = bundle
         //fragmet.onBookSet("Harry Potter")
@@ -79,7 +100,7 @@ class MainActivity : AppCompatActivity(), Comunicator {
 
     override fun nextDetailedFilmItemFragment(film: Film) {
         val transaction = manager.beginTransaction()
-        val fragment = FilmDetailed()
+        val fragment = FilmDetailedFragment()
         val bundle = Bundle()
 
         bundle.putString("tittle", film.tittle)
@@ -93,6 +114,28 @@ class MainActivity : AppCompatActivity(), Comunicator {
         transaction.addToBackStack(null)
         transaction.commit()
 
+    }
+
+    override fun nextEditFragment(bundle: Bundle) {
+        val transaction = manager.beginTransaction()
+        val fragment = BookEditFragment()
+        //Toast.makeText(applicationContext, "Book to edit: "+ bundle.getInt("bookId"),Toast.LENGTH_SHORT).show()
+        fragment.arguments = bundle
+        //fragmet.onBookSet("Harry Potter")
+        transaction.replace(R.id.main_fragment, fragment)
+        transaction.addToBackStack(null)
+        transaction.commit()
+    }
+
+    override fun nextDeletedBook(position: Int) {
+        val transaction = manager.beginTransaction()
+        val fragment = BooksFragmet()
+        val bundle = Bundle()
+        bundle.putInt("position", position)
+        fragment.arguments = bundle
+        transaction.replace(R.id.main_fragment, fragment)
+        transaction.addToBackStack(null)
+        transaction.commit()
     }
 
 }

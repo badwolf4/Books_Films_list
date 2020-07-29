@@ -7,4 +7,27 @@
     <string name="add_button">Add</string>
     <string name="find_button">Find</string>
 
+    <string name="tittle">Tittle</string>
+    <string name="author">Author</string>
+    <string name="type">Genre</string>
+    <string name="priority">Priority</string>
+    <string name="descrioption">Descrioption</string>
+
+    <string name="tittle1">Tittle:</string>
+    <string name="author1">Author:</string>
+    <string name="type1">Genre:</string>
+    <string name="priority1">Priority:</string>
+    <string name="descrioption1">Descrioption:</string>
+
+    <string name="start_value">0</string>
+    <string name="year">Year</string>
+    <string name="film_type">Type</string>
+
+    <string name="edit">Edit</string>
+    <string name="save">Save</string>
+    <string name="delete">Delete</string>
+    <string name="copy">Copy</string>
+    <string name="search">Search</string>
+    <string name="sort">Sort by</string>
+
 </resources>

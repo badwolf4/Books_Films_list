@@ -1,15 +1,15 @@
 package com.gohool.booksfilmslist.fragments
 
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.widget.SearchView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gohool.booksfilmslist.Comunicator
 import com.gohool.booksfilmslist.adapters.BooksAdapter
 import com.gohool.booksfilmslist.R
+import com.gohool.booksfilmslist.adapters.BookDataBaseHelper
 import com.gohool.booksfilmslist.adapters.onBookItemClickListener
 import com.gohool.booksfilmslist.classes.Book
 import kotlinx.android.synthetic.main.books_fragmet.*
@@ -18,81 +18,20 @@ import kotlinx.android.synthetic.main.books_fragmet.view.*
 
 class BooksFragmet : onBookItemClickListener, Fragment() {
 
-    val books = listOf(
-        Book("Kult", "Autor", "Gatunek", 2, "none"),
-        Book(
-            "Sztuka milosci",
-            "Autor",
-            "Gatunek",
-            2,
-            "none"
-        ),
-        Book(
-            "13 reasons why",
-            "Autor",
-            "Gatunek",
-            2,
-            "none"
-        ),
-        Book(
-            "13 reasons why",
-            "Autor",
-            "Gatunek",
-            2,
-            "none"
-        ),
-        Book(
-            "13 reasons why",
-            "Autor",
-            "Gatunek",
-            2,
-            "none"
-        ),
-        Book(
-            "13 reasons why",
-            "Autor",
-            "Gatunek",
-            2,
-            "none"
-        ),
-        Book(
-            "13 reasons why",
-            "Autor",
-            "Gatunek",
-            2,
-            "none"
-        ),
-        Book(
-            "13 reasons why",
-            "Autor",
-            "Gatunek",
-            2,
-            "none"
-        ),
-        Book(
-            "13 reasons why",
-            "Autor",
-            "Gatunek",
-            2,
-            "none"
-        ),
-        Book(
-            "wo ist sinna",
-            "Autor",
-            "Gatunek",
-            2,
-            "none"
-        ),
-        Book("Tytul", "Autor", "Gatunek", 2,"none")
-
-    )
 
     lateinit var comunicator: Comunicator
+    var bookList = ArrayList<Book>()
 
+    companion object{
+        lateinit var adapter : BooksAdapter
+        lateinit var dbHelper: BookDataBaseHelper
+        fun newInstance(): BooksFragmet =
+            BooksFragmet()
 
-    //val books = listOf<String>("Kult", "Sztuka milosci", "13 reasons why", "wo ist sinna")
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setHasOptionsMenu(true)
         super.onCreate(savedInstanceState)
         retainInstance = true
 
@@ -104,38 +43,112 @@ class BooksFragmet : onBookItemClickListener, Fragment() {
     ): View?{
         val view: View = inflater.inflate(R.layout.books_fragmet, container, false)
         comunicator = activity as Comunicator
-        view.addBookButton.setOnClickListener{
-            Toast.makeText(context, "Add pressed", Toast.LENGTH_LONG)
+
+        view.floating_add_btn.setOnClickListener{
+            comunicator.nextFragment(R.id.floating_add_btn)
+            bookList = dbHelper.getBooks()
         }
-        view.findBookButton.setOnClickListener{
-            Toast.makeText(context, "Find pressed", Toast.LENGTH_LONG)
-        }
+
         return view
     }
 
 
-        //recyclerViewBooks.layoutManager = LinearLayoutManager(activity)
-
-        //recyclerViewBooks.adapter = BooksAdapter(books)
-
-        //return view
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        dbHelper = BookDataBaseHelper(view.context)
+        bookList = dbHelper.getBooks()
+        viewBooks(bookList)
+    }
+
+    override fun onResume() {
+        bookList = dbHelper.getBooks()
+        viewBooks(bookList)
+        super.onResume()
+    }
+
+    private fun viewBooks(newList : ArrayList<Book>){
         recycler_view_books.apply {
             layoutManager = LinearLayoutManager(activity)
-            adapter = BooksAdapter(books,this@BooksFragmet)
+            adapter = BooksAdapter(this@BooksFragmet, newList)
         }
     }
 
-    companion object{
-        fun newInstance(): BooksFragmet =
-            BooksFragmet()
+
+    override fun onItemClick(book: Book, position: Int) {
+        val bundle = Bundle()
+
+
+        bundle.putString("tittle", book.tittle)
+        bundle.putString("author",book.author)
+        bundle.putString("description",book.description)
+        bundle.putString("type",book.type)
+        bundle.putInt("priority",book.priority)
+        bundle.putInt("bookId", book.id)
+
+
+        comunicator.nextDetailedBookItemFragment(bundle)
+
     }
 
-    override fun onItemClick(item: Book, position: Int) {
-        comunicator.nextDetailedBookItemFragment(item)
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.list_option_menu, menu)
+        val menuItem = menu.findItem(R.id.search)
+        val searchView = menuItem.actionView as SearchView
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return true
+            }
 
+            override fun onQueryTextChange(newText: String?): Boolean {
+                var filteredBooks = ArrayList<Book>()
+
+                if(!newText.isNullOrEmpty()){
+                    val text = newText.toLowerCase()
+                    var book : Book
+
+                    for(i in 0 until bookList.size){
+                        book = bookList.get(i)
+                        if( book.tittle.toLowerCase().contains(text)
+                            or book.author.toLowerCase().contains(text)
+                            or book.type.toLowerCase().contains(text)){
+
+                            filteredBooks.add(bookList.get(i))
+                        }
+                    }
+                }
+                else{
+                    filteredBooks=bookList
+                }
+                viewBooks(filteredBooks)
+                return true
+            }
+
+        })
+
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.tittle-> {
+                //Toast.makeText(context, "Tittle pressed", Toast.LENGTH_SHORT).show()
+                bookList.sortWith(compareBy {it.tittle})
+                viewBooks(bookList)
+            }
+            R.id.author-> {
+                //Toast.makeText(context, "Author pressed", Toast.LENGTH_SHORT).show()
+                bookList.sortWith(compareBy {it.author})
+                viewBooks(bookList)
+            }
+            R.id.priority-> {
+                //Toast.makeText(context, "Priority pressed", Toast.LENGTH_SHORT).show()
+                bookList.sortWith(compareBy({it.priority}, {it.tittle}))
+                viewBooks(bookList)
+            }
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 
 }
