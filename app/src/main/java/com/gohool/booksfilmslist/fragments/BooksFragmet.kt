@@ -1,12 +1,9 @@
 package com.gohool.booksfilmslist.fragments
 
-import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
-import android.widget.Button
 import android.widget.SearchView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gohool.booksfilmslist.Comunicator
@@ -17,7 +14,6 @@ import com.gohool.booksfilmslist.adapters.onBookItemClickListener
 import com.gohool.booksfilmslist.classes.Book
 import kotlinx.android.synthetic.main.books_fragmet.*
 import kotlinx.android.synthetic.main.books_fragmet.view.*
-import java.text.FieldPosition
 
 
 class BooksFragmet : onBookItemClickListener, Fragment() {
@@ -50,7 +46,9 @@ class BooksFragmet : onBookItemClickListener, Fragment() {
 
         view.floating_add_btn.setOnClickListener{
             comunicator.nextFragment(R.id.floating_add_btn)
+            bookList = dbHelper.getBooks()
         }
+
         return view
     }
 
@@ -64,7 +62,8 @@ class BooksFragmet : onBookItemClickListener, Fragment() {
     }
 
     override fun onResume() {
-        (bookList)
+        bookList = dbHelper.getBooks()
+        viewBooks(bookList)
         super.onResume()
     }
 
@@ -85,7 +84,7 @@ class BooksFragmet : onBookItemClickListener, Fragment() {
         bundle.putString("description",book.description)
         bundle.putString("type",book.type)
         bundle.putInt("priority",book.priority)
-        bundle.putInt("bookId", position)
+        bundle.putInt("bookId", book.id)
 
 
         comunicator.nextDetailedBookItemFragment(bundle)
@@ -93,8 +92,7 @@ class BooksFragmet : onBookItemClickListener, Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.search_option_menu, menu)
-
+        inflater.inflate(R.menu.list_option_menu, menu)
         val menuItem = menu.findItem(R.id.search)
         val searchView = menuItem.actionView as SearchView
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
@@ -109,7 +107,7 @@ class BooksFragmet : onBookItemClickListener, Fragment() {
                     val text = newText.toLowerCase()
                     var book : Book
 
-                    for(i in 0 until bookList.size-1){
+                    for(i in 0 until bookList.size){
                         book = bookList.get(i)
                         if( book.tittle.toLowerCase().contains(text)
                             or book.author.toLowerCase().contains(text)
@@ -127,10 +125,29 @@ class BooksFragmet : onBookItemClickListener, Fragment() {
             }
 
         })
+
         super.onCreateOptionsMenu(menu, inflater)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.tittle-> {
+                //Toast.makeText(context, "Tittle pressed", Toast.LENGTH_SHORT).show()
+                bookList.sortWith(compareBy {it.tittle})
+                viewBooks(bookList)
+            }
+            R.id.author-> {
+                //Toast.makeText(context, "Author pressed", Toast.LENGTH_SHORT).show()
+                bookList.sortWith(compareBy {it.author})
+                viewBooks(bookList)
+            }
+            R.id.priority-> {
+                //Toast.makeText(context, "Priority pressed", Toast.LENGTH_SHORT).show()
+                bookList.sortWith(compareBy({it.priority}, {it.tittle}))
+                viewBooks(bookList)
+            }
+        }
+
         return super.onOptionsItemSelected(item)
     }
 

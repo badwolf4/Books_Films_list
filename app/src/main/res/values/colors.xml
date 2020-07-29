@@ -3,4 +3,6 @@
     <color name="colorPrimary">#673AB7</color>
     <color name="colorPrimaryDark">#311465</color>
     <color name="colorAccent">#DF7BA0</color>
+    <color name="backgroundWhite">#FFFFFF</color>
+    <color name="myPurpe">#8661C8</color>
 </resources>

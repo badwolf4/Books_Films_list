@@ -2,7 +2,6 @@ package com.gohool.booksfilmslist.fragments
 
 import android.content.ContentValues
 import android.os.Bundle
-import android.provider.BaseColumns
 import android.util.Log
 import android.view.*
 import android.widget.EditText
@@ -12,9 +11,7 @@ import android.widget.TextView
 import android.widget.Toast
 import com.gohool.booksfilmslist.Comunicator
 import com.gohool.booksfilmslist.R
-import com.gohool.booksfilmslist.adapters.BookDataBaseHelper
 import com.gohool.booksfilmslist.adapters.TableInfo
-import kotlinx.android.synthetic.*
 import kotlinx.android.synthetic.main.fragment_add_book.view.*
 
 class BookEditFragment : Fragment() {
@@ -64,6 +61,8 @@ class BookEditFragment : Fragment() {
             }
             priority.text = it.toString()
         }
+        if(arguments?.getInt("priority")==null)
+            priority.text = "0"
 
         seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
@@ -85,7 +84,7 @@ class BookEditFragment : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.edit_item_menu, menu)
+        inflater.inflate(R.menu.edit_item_opion_menu, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
 

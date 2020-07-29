@@ -35,17 +35,19 @@ class BooksAdapter(var onClickListener: onBookItemClickListener, val books : Arr
         holder.bind(onClickListener, books.get(position))
 
         val tittle  = books.get(position).tittle
-        val bookId = position.plus(1)
+        val bookId  = books.get(position).id
+        //val bookId = position.plus(1)
         holder.itemView.delete_item.setOnClickListener {
 
-            var alertDialog  = AlertDialog.Builder(holder.itemView.context).setTitle("Warning")
+            var alertDialog  = AlertDialog.Builder(holder.itemView.context)
                 .setMessage("Are you sure that you want to delete ${tittle}?")
                 .setPositiveButton("Yes", DialogInterface.OnClickListener{ dialog,which ->
                     Log.d("MyLog", "Inside delete button")
                     Log.d("MyLog", "Books list size: ${books.size}")
                     val selection = "${TableInfo.TABLE_COLUMN_TITTLE} LIKE ?"
 
-                    BooksFragmet.dbHelper.deleteBook( tittle)
+                    //BooksFragmet.dbHelper.deleteBook( tittle)
+                    BooksFragmet.dbHelper.deleteBook( bookId)
                     Log.d("MyLog", "Book deleted")
 
                     books.removeAt(position)
@@ -56,7 +58,6 @@ class BooksAdapter(var onClickListener: onBookItemClickListener, val books : Arr
 
                 })
                 .setNegativeButton("No", DialogInterface.OnClickListener { dialog, which -> })
-                .setIcon(R.drawable.ic_baseline_warning_24)
                 .show()
 
         }

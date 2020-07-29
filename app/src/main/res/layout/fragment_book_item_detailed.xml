@@ -15,46 +15,84 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="40sp"
+                    android:text="@string/tittle1"
+                    android:layout_marginEnd="20sp"/>
+                <TextView
+                    android:id="@+id/tittle_detailed"
+                    android:textSize="40sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    />
+            </LinearLayout>
 
-            <TextView
-                android:id="@+id/tittle_detailed"
-                android:text="tittle"
-                android:textSize="40sp"
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                />
-            <TextView
-                android:id="@+id/author_detailed"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+                <TextView
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/author1"
+                    android:textSize="30sp"
+                    android:layout_marginEnd="20sp"
+                    />
+                <TextView
+                    android:id="@+id/author_detailed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="30sp"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Autor"
-                android:textSize="30sp"
-                />
-            <TextView
-                android:id="@+id/type_detailed"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Type"
-                android:textSize="25sp"
-                />
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/type1"
+                    android:layout_marginEnd="20sp"
+                    android:textSize="25sp"
+                    />
+                <TextView
+                    android:id="@+id/type_detailed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="25sp"
+                    />
+            </LinearLayout>
+
         </LinearLayout>
         <TextView
             android:id="@+id/priority_detailed"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="5"
             android:textSize="50sp"
             android:gravity="right"
             android:layout_weight="1"
 
             />
     </LinearLayout>
-
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/descrioption1"
+        android:textSize="20sp"
+        />
     <TextView
         android:id="@+id/description_detailed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Description"
         android:textSize="20sp"
         />
 

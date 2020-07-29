@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/tittle"
+        android:orderInCategory="100"
+        android:title="@string/tittle"
+        app:showAsAction="never"
+        />
+    <item
+        android:id="@+id/author"
+        android:orderInCategory="100"
+        android:title="@string/author"
+        app:showAsAction="never"
+        />
+    <item
+        android:id="@+id/priority"
+        android:orderInCategory="100"
+        android:title="@string/priority"
+        app:showAsAction="never"
+        />
+</menu>

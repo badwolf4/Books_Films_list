@@ -27,13 +27,15 @@ class BookDataBaseHelper(context : Context): SQLiteOpenHelper(context, TableInfo
         else{
             cursor.moveToFirst()
             while (!cursor.isAfterLast()){
-                val book = Book(cursor.getString(cursor.getColumnIndex(TableInfo.TABLE_COLUMN_TITTLE)),
+                val book = Book(cursor.getInt(cursor.getColumnIndex(BaseColumns._ID)),
+                                cursor.getString(cursor.getColumnIndex(TableInfo.TABLE_COLUMN_TITTLE)),
                                 cursor.getString(cursor.getColumnIndex(TableInfo.TABLE_COLUMN_AUTHOR)),
                                 cursor.getString(cursor.getColumnIndex(TableInfo.TABLE_COLUMN_TYPE)),
                                 cursor.getInt(cursor.getColumnIndex(TableInfo.TABLE_COLUMN_PRIORITY)),
                                 cursor.getString(cursor.getColumnIndex(TableInfo.TABLE_COLUMN_DESCRIPTION)))
 
                 books.add(book)
+
                 cursor.moveToNext()
             }
         }
@@ -44,13 +46,15 @@ class BookDataBaseHelper(context : Context): SQLiteOpenHelper(context, TableInfo
         return books
     }
 
-    fun deleteBook(tittle :String) : Boolean{
+    fun deleteBook(id :Int) : Boolean{
         var result = false
 
         val db = this.writableDatabase
 
         try{
-            db.delete(TableInfo.TABLE_NAME,TableInfo.TABLE_COLUMN_TITTLE+"=?", arrayOf(tittle))
+            //db.delete(TableInfo.TABLE_NAME,TableInfo.TABLE_COLUMN_TITTLE+"=?", arrayOf(tittle))
+            db.delete(TableInfo.TABLE_NAME,BaseColumns._ID+"=?", arrayOf(id.toString()))
+
             Log.d("MyLog", "Book sucessfuly deleted")
             result = true
         }catch (e : Exception){

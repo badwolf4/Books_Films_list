@@ -1,25 +1,15 @@
 package com.gohool.booksfilmslist.fragments
 
-import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.os.Bundle
-import android.provider.BaseColumns
-import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.TextView
-import android.widget.Toast
 import com.gohool.booksfilmslist.Comunicator
 
 import com.gohool.booksfilmslist.R
-import com.gohool.booksfilmslist.adapters.BookDataBaseHelper
-import com.gohool.booksfilmslist.adapters.BooksAdapter
-import com.gohool.booksfilmslist.adapters.TableInfo
 import com.gohool.booksfilmslist.classes.Book
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.android.synthetic.*
-import kotlinx.android.synthetic.main.fragment_book_item_detailed.*
 
 
 class BookDetailedFragment : Fragment() {
@@ -71,7 +61,7 @@ class BookDetailedFragment : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.book_detailed_option_menu,menu)
+        inflater.inflate(R.menu.detailed_option_menu,menu)
         super.onCreateOptionsMenu(menu, inflater)
 
     }
@@ -93,15 +83,15 @@ class BookDetailedFragment : Fragment() {
             }
             R.id.delete_button->
             {
-                var alertDialog  = AlertDialog.Builder(context).setTitle("Warning")
+                var alertDialog  = AlertDialog.Builder(context)
                     .setMessage("Are you sure that you want to delete ${tittle}?")
                     .setPositiveButton("Yes", DialogInterface.OnClickListener{ dialog,which ->
-                        tittle?.let { BooksFragmet.dbHelper.deleteBook(it) }
+                        //tittle?.let { BooksFragmet.dbHelper.deleteBook(it) }
+                        bookId?.let { BooksFragmet.dbHelper.deleteBook(it)}
                         comunicator.nextFragment(R.id.booksButton)
 
 
             }).setNegativeButton("No", DialogInterface.OnClickListener { dialog, which -> })
-                    .setIcon(R.drawable.ic_baseline_warning_24)
                     .show()
             }
         }
