@@ -20,5 +20,6 @@
     <string name="save">Save</string>
     <string name="delete">Delete</string>
     <string name="copy">Copy</string>
+    <string name="search">Search</string>
 
 </resources>

@@ -2,11 +2,10 @@ package com.gohool.booksfilmslist.fragments
 
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
+import android.widget.SearchView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,9 +24,18 @@ class BooksFragmet : onBookItemClickListener, Fragment() {
 
 
     lateinit var comunicator: Comunicator
+    var bookList = ArrayList<Book>()
 
+    companion object{
+        lateinit var adapter : BooksAdapter
+        lateinit var dbHelper: BookDataBaseHelper
+        fun newInstance(): BooksFragmet =
+            BooksFragmet()
+
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setHasOptionsMenu(true)
         super.onCreate(savedInstanceState)
         retainInstance = true
 
@@ -40,9 +48,6 @@ class BooksFragmet : onBookItemClickListener, Fragment() {
         val view: View = inflater.inflate(R.layout.books_fragmet, container, false)
         comunicator = activity as Comunicator
 
-        view.findBookButton.setOnClickListener{
-            Toast.makeText(context, "Find pressed", Toast.LENGTH_LONG).show()
-        }
         view.floating_add_btn.setOnClickListener{
             comunicator.nextFragment(R.id.floating_add_btn)
         }
@@ -54,45 +59,22 @@ class BooksFragmet : onBookItemClickListener, Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         dbHelper = BookDataBaseHelper(view.context)
-
-//        recycler_view_books.apply {
-//            layoutManager = LinearLayoutManager(activity)
-//            //val dbHelper = BookDataBaseHelper(context)
-//            val bookList = dbHelper.getBooks()
-//            adapter = BooksAdapter(this@BooksFragmet, bookList)
-//        }
-
-        viewBooks()
-//        arguments?.getInt("id").let{
-//            if (it != null) {
-//                Toast.makeText(context, "Book id: ${it.toString()}", Toast.LENGTH_SHORT)
-//                adapter.removeBook(it)
-//            }
-//        }
+        bookList = dbHelper.getBooks()
+        viewBooks(bookList)
     }
 
     override fun onResume() {
-        viewBooks()
+        (bookList)
         super.onResume()
     }
 
-    private fun viewBooks(){
-        //val bookList = dbHelper.getBooks()
+    private fun viewBooks(newList : ArrayList<Book>){
         recycler_view_books.apply {
             layoutManager = LinearLayoutManager(activity)
-            //val dbHelper = BookDataBaseHelper(context)
-            val bookList = dbHelper.getBooks()
-            adapter = BooksAdapter(this@BooksFragmet, bookList)
+            adapter = BooksAdapter(this@BooksFragmet, newList)
         }
     }
 
-    companion object{
-        lateinit var adapter : BooksAdapter
-        lateinit var dbHelper: BookDataBaseHelper
-        fun newInstance(): BooksFragmet =
-            BooksFragmet()
-
-    }
 
     override fun onItemClick(book: Book, position: Int) {
         val bundle = Bundle()
@@ -110,22 +92,51 @@ class BooksFragmet : onBookItemClickListener, Fragment() {
 
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.search_option_menu, menu)
 
+        val menuItem = menu.findItem(R.id.search)
+        val searchView = menuItem.actionView as SearchView
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return true
+            }
 
+            override fun onQueryTextChange(newText: String?): Boolean {
+                var filteredBooks = ArrayList<Book>()
 
-//    override fun onDestroy() {
-//        super.onDestroy()
-//        db.close()
-//    }
+                if(!newText.isNullOrEmpty()){
+                    val text = newText.toLowerCase()
+                    var book : Book
+
+                    for(i in 0 until bookList.size-1){
+                        book = bookList.get(i)
+                        if( book.tittle.toLowerCase().contains(text)
+                            or book.author.toLowerCase().contains(text)
+                            or book.type.toLowerCase().contains(text)){
+
+                            filteredBooks.add(bookList.get(i))
+                        }
+                    }
+                }
+                else{
+                    filteredBooks=bookList
+                }
+                viewBooks(filteredBooks)
+                return true
+            }
+
+        })
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return super.onOptionsItemSelected(item)
+    }
 
 }
 
-//list.remove(position);
-//recycler.removeViewAt(position);
-//mAdapter.notifyItemRemoved(position);
-//mAdapter.notifyItemRangeChanged(position, list.size());
 
-//mAdapter.notifyDataSetChanged();
 
 
 

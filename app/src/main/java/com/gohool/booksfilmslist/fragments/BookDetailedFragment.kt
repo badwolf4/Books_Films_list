@@ -22,7 +22,7 @@ import kotlinx.android.synthetic.*
 import kotlinx.android.synthetic.main.fragment_book_item_detailed.*
 
 
-class BookItemDetailedFragment : Fragment() {
+class BookDetailedFragment : Fragment() {
 
     lateinit var comunicator : Comunicator
     var bundle : Bundle? = Bundle()
@@ -32,6 +32,8 @@ class BookItemDetailedFragment : Fragment() {
     var description : String? = null
     var priority : Int? = null
     var bookId : Int? = null
+
+    var dbBooks = ArrayList<Book>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setHasOptionsMenu(true)

@@ -6,10 +6,8 @@ import android.widget.Toast
 import com.gohool.booksfilmslist.Comunicator
 import com.gohool.booksfilmslist.R
 import com.gohool.booksfilmslist.adapters.BookDataBaseHelper
-import com.gohool.booksfilmslist.classes.Book
 import com.gohool.booksfilmslist.classes.Film
 import com.gohool.booksfilmslist.fragments.*
-import kotlinx.android.synthetic.main.books_fragmet.view.*
 
 class MainActivity : AppCompatActivity(), Comunicator {
 
@@ -83,7 +81,7 @@ class MainActivity : AppCompatActivity(), Comunicator {
 
     override fun nextDetailedBookItemFragment(bundle: Bundle) {
         val transaction = manager.beginTransaction()
-        val fragment = BookItemDetailedFragment()
+        val fragment = BookDetailedFragment()
 //        val bundle = Bundle()
 //
 //        bundle.putString("tittle", book.tittle)
@@ -102,7 +100,7 @@ class MainActivity : AppCompatActivity(), Comunicator {
 
     override fun nextDetailedFilmItemFragment(film: Film) {
         val transaction = manager.beginTransaction()
-        val fragment = FilmDetailed()
+        val fragment = FilmDetailedFragment()
         val bundle = Bundle()
 
         bundle.putString("tittle", film.tittle)
