@@ -3,11 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@drawable/card_view_shape">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:layout_marginEnd="10sp"
+        android:layout_marginTop="20sp"
+        android:layout_marginStart="10sp"
+        android:layout_marginBottom="20sp"
+       >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -21,24 +28,39 @@
                 android:id="@+id/film_tittle_textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="25sp"
+                android:textSize="30sp"
                 android:text="Tytul"/>
             <TextView
                 android:id="@+id/film_year_TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
+                android:textSize="25sp"
                 android:text="Rok"/>
         </LinearLayout>
         <TextView
+            android:text="5"
             android:id="@+id/film_priority_textView"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textSize="30sp"
+            android:textSize="35sp"
             android:gravity="end"
             android:layout_weight="1"
-            android:text="5"
+            android:layout_marginEnd="30sp"
+            />
+
+        <ImageButton
+            android:id="@+id/delete_item"
+            android:layout_marginEnd="10sp"
+            android:layout_marginTop="10sp"
+            android:layout_marginLeft="10sp"
+            android:layout_marginBottom="10sp"
+            android:layout_width="70sp"
+            android:layout_height="70sp"
+            android:text="@string/delete"
+            android:src="@drawable/delete_icon_foreground"
+            android:background="@drawable/circle_button_shape"
             />
 
     </LinearLayout>
+    </androidx.cardview.widget.CardView>
 </RelativeLayout>

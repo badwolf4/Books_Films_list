@@ -12,6 +12,7 @@ import com.gohool.booksfilmslist.R
 import com.gohool.booksfilmslist.adapters.BookDataBaseHelper
 import com.gohool.booksfilmslist.adapters.onBookItemClickListener
 import com.gohool.booksfilmslist.classes.Book
+import com.gohool.booksfilmslist.classes.Constants
 import kotlinx.android.synthetic.main.books_fragmet.*
 import kotlinx.android.synthetic.main.books_fragmet.view.*
 
@@ -45,7 +46,7 @@ class BooksFragmet : onBookItemClickListener, Fragment() {
         comunicator = activity as Comunicator
 
         view.floating_add_btn.setOnClickListener{
-            comunicator.nextFragment(R.id.floating_add_btn)
+            comunicator.nextFragment(Constants.BOOK_EDIT_FRAGMENT)
             bookList = dbHelper.getBooks()
         }
 
@@ -87,7 +88,8 @@ class BooksFragmet : onBookItemClickListener, Fragment() {
         bundle.putInt("bookId", book.id)
 
 
-        comunicator.nextDetailedBookItemFragment(bundle)
+        comunicator.nextFragment(Constants.BOOK_DETAILED_FRAGMENT,bundle)
+        //comunicator.nextFragment(Constants.BOOK_EDIT_FRAGMENT,bundle)
 
     }
 

@@ -8,14 +8,17 @@
     tools:context=".fragments.BooksFragmet"
     >
 
-<LinearLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_books"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
-</LinearLayout>
+
+    </LinearLayout>
+
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/floating_add_btn"
             android:layout_width="wrap_content"
@@ -24,6 +27,9 @@
             android:backgroundTint="@color/myPurpe"
             app:fabSize="normal"
             android:src="@drawable/ic_baseline_add_24"
-            app:borderWidth="0sp"/>
+            app:borderWidth="0sp"
+            android:layout_marginEnd="30sp"
+            android:layout_marginBottom="30sp"
+            />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

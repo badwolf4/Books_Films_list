@@ -5,6 +5,6 @@ data class Film (
     val type : String,
     val year : Int,
     val priority : Int,
-    val descriptiont : String
+    val description : String
 )
 

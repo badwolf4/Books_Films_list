@@ -12,6 +12,7 @@ import android.widget.Toast
 import com.gohool.booksfilmslist.Comunicator
 import com.gohool.booksfilmslist.R
 import com.gohool.booksfilmslist.adapters.TableInfo
+import com.gohool.booksfilmslist.classes.Constants
 import kotlinx.android.synthetic.main.fragment_add_book.view.*
 
 class BookEditFragment : Fragment() {
@@ -38,7 +39,7 @@ class BookEditFragment : Fragment() {
         seekBar = view.findViewById(R.id.priority) as SeekBar
         seekBar.max = 10
 
-        val bookTittle = view.findViewById<EditText>(R.id.bookTittle)
+        //val bookTittle = view.findViewById<EditText>(R.id.bookTittle)
         Log.d("MyLog", "Trying to read state")
         arguments?.getString("tittle").let {
             view.bookTittle.setText(it)
@@ -117,7 +118,7 @@ class BookEditFragment : Fragment() {
             else{
                 Toast.makeText(context, "Book with empty fields can not be added", Toast.LENGTH_LONG).show()
             }
-            comunicator.nextFragment(R.id.booksButton)
+            comunicator.nextFragment(Constants.BOOKS_FRAGMENT)
 
         return super.onOptionsItemSelected(item)
     }

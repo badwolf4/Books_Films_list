@@ -10,6 +10,7 @@ import com.gohool.booksfilmslist.Comunicator
 
 import com.gohool.booksfilmslist.R
 import com.gohool.booksfilmslist.classes.Book
+import com.gohool.booksfilmslist.classes.Constants
 
 
 class BookDetailedFragment : Fragment() {
@@ -79,7 +80,8 @@ class BookDetailedFragment : Fragment() {
                 bookId?.let { bundle.putInt("bookId", it) }
                 priority?.let { bundle.putInt("priority", it) }
 
-                comunicator.nextEditFragment(bundle)
+                //comunicator.nextEditFragment(bundle)
+                comunicator.nextFragment(Constants.BOOK_EDIT_FRAGMENT,bundle)
             }
             R.id.delete_button->
             {
@@ -88,7 +90,7 @@ class BookDetailedFragment : Fragment() {
                     .setPositiveButton("Yes", DialogInterface.OnClickListener{ dialog,which ->
                         //tittle?.let { BooksFragmet.dbHelper.deleteBook(it) }
                         bookId?.let { BooksFragmet.dbHelper.deleteBook(it)}
-                        comunicator.nextFragment(R.id.booksButton)
+                        comunicator.nextFragment(Constants.BOOKS_FRAGMENT)
 
 
             }).setNegativeButton("No", DialogInterface.OnClickListener { dialog, which -> })

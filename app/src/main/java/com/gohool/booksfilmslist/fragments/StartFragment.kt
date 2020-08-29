@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.gohool.booksfilmslist.Comunicator
 import com.gohool.booksfilmslist.R
+import com.gohool.booksfilmslist.classes.Constants
 import kotlinx.android.synthetic.main.fragment_start.view.*
 
 /**
@@ -30,11 +31,11 @@ class StartFragment : Fragment() {
 
         comunicator = activity as Comunicator
         view.booksButton.setOnClickListener{
-            comunicator.nextFragment(R.id.booksButton)
+            comunicator.nextFragment(Constants.BOOKS_FRAGMENT)
         }
 
         view.filmsButton.setOnClickListener{
-            comunicator.nextFragment(R.id.filmsButton)
+            comunicator.nextFragment(Constants.FILMS_FRAGMENT)
         }
 
         return view
