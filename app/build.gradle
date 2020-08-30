@@ -2,6 +2,8 @@ apply plugin: 'com.android.application'
 
 apply plugin: 'kotlin-android'
 
+apply plugin: 'kotlin-kapt'
+
 apply plugin: 'kotlin-android-extensions'
 
 android {
@@ -38,11 +40,22 @@ dependencies {
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'com.google.android.material:material:1.1.0'
 
-    //Retrofit2
-    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.9.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
+//    //Retrofit2
+//    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.9.0'
+//    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
+//
+//    //JavaRx
+//    implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
+//    implementation 'io.reactivex.rxjava2:rxjava:2.1.7'
 
-    //JavaRx
-    implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
-    implementation 'io.reactivex.rxjava2:rxjava:2.1.7'
+    //Room Database
+    def room_version = "2.2.5"
+    implementation "androidx.room:room-runtime:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+
+    // optional - Kotlin Extensions and Coroutines support for Room
+    //implementation "androidx.room:room-ktx:$room_version"
+
+    // optional - Test helpers
+    //testImplementation "androidx.room:room-testing:$room_version"
 }

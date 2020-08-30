@@ -6,7 +6,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.gohool.booksfilmslist.R
 import com.gohool.booksfilmslist.adapters.onFilmItemClickListener
-import com.gohool.booksfilmslist.classes.Film
+import com.gohool.booksfilmslist.filmsRoomDatabase.Film
 
 class FilmViewHolder(inflater: LayoutInflater,parent: ViewGroup ) :RecyclerView.ViewHolder(inflater.inflate(
     R.layout.film_item, parent, false)) {

@@ -5,6 +5,7 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.SearchView
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gohool.booksfilmslist.Comunicator
 import com.gohool.booksfilmslist.adapters.BooksAdapter
@@ -13,6 +14,7 @@ import com.gohool.booksfilmslist.adapters.BookDataBaseHelper
 import com.gohool.booksfilmslist.adapters.onBookItemClickListener
 import com.gohool.booksfilmslist.classes.Book
 import com.gohool.booksfilmslist.classes.Constants
+import com.gohool.booksfilmslist.viewModels.FilmsViewModel
 import kotlinx.android.synthetic.main.books_fragmet.*
 import kotlinx.android.synthetic.main.books_fragmet.view.*
 
@@ -22,6 +24,7 @@ class BooksFragmet : onBookItemClickListener, Fragment() {
 
     lateinit var comunicator: Comunicator
     var bookList = ArrayList<Book>()
+    private lateinit var viewModel : FilmsViewModel
 
     companion object{
         lateinit var adapter : BooksAdapter

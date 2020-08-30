@@ -1,5 +1,6 @@
 package com.gohool.booksfilmslist.fragments
 
+import android.app.Activity
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -7,7 +8,12 @@ import androidx.fragment.app.Fragment
 import android.widget.SeekBar
 import android.widget.TextView
 import android.widget.Toast
+import com.gohool.booksfilmslist.Comunicator
 import com.gohool.booksfilmslist.R
+import com.gohool.booksfilmslist.activities.MainActivity
+import com.gohool.booksfilmslist.classes.Constants
+import com.gohool.booksfilmslist.filmsRoomDatabase.Film
+import kotlinx.android.synthetic.main.fragment_add_book.view.*
 import kotlinx.android.synthetic.main.fragment_add_film.view.*
 import org.w3c.dom.Text
 
@@ -16,6 +22,9 @@ class FilmEditFragment : Fragment() {
 
     lateinit var priority : SeekBar
     lateinit var priorityValue : TextView
+    lateinit var comunicator: Comunicator
+
+    var filmId : Int?=null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,6 +35,8 @@ class FilmEditFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        comunicator = activity as Comunicator
+        Log.d("MyLog: ","Film edit fragment created")
 
         val view : View = inflater.inflate(R.layout.fragment_add_film, container, false)
         priority = view.findViewById(R.id.priority) as SeekBar
@@ -48,12 +59,9 @@ class FilmEditFragment : Fragment() {
             }
         }
 
+        filmId = arguments?.getInt("filmId")
+
         Log.v("MyLog","year set")
-//        arguments?.getInt("priority").let {
-//            if (it != null) {
-//                view.priority_value.setText(it).toString()
-//            }
-//        }
 
         arguments?.getInt("priority").let {
             if (it != null) {
@@ -82,9 +90,6 @@ class FilmEditFragment : Fragment() {
 
         })
 
-        view.add_button.setOnClickListener {
-            Toast.makeText(context, "Film added", Toast.LENGTH_SHORT).show()
-        }
         return view
     }
 
@@ -93,8 +98,35 @@ class FilmEditFragment : Fragment() {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        Log.d("MyLog", "Save item clicked")
         //saving updated item
+        val tittle = view?.filmTittle?.text.toString()
+        Log.d("MyLog: ", "Tittle saved")
+        val type = view?.filmType?.text.toString()
+        Log.d("MyLog: ", "Type saved")
+        val year = view?.filmYear?.text.toString().toInt()
+        Log.d("MyLog: ", "Year saved")
+        val mpriority = priority.progress
+        Log.d("MyLog: ", "Priority saved")
+        val descrioption = view?.filmDescription?.text.toString()
+        Log.d("MyLog: ", "Values are saved")
+
+        if(filmId==null){
+            val film = Film(tittle,type,year,mpriority,descrioption)
+            MainActivity.viewModel.insertFilm(film)
+            Log.v("MyLog", "Film inserted")
+
+        }
+        else{
+            val film = Film(tittle,type,year,mpriority,descrioption)
+            film.filmId = filmId as Int
+            MainActivity.viewModel.updateFilm(film)
+            Log.v("MyLog", "Film updated")
+        }
+        comunicator.nextFragment(Constants.FILMS_FRAGMENT)
+
         return super.onOptionsItemSelected(item)
     }
 

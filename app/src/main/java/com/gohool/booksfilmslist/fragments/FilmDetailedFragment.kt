@@ -1,5 +1,7 @@
 package com.gohool.booksfilmslist.fragments
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
@@ -8,7 +10,9 @@ import android.widget.Toast
 import com.gohool.booksfilmslist.Comunicator
 
 import com.gohool.booksfilmslist.R
+import com.gohool.booksfilmslist.activities.MainActivity
 import com.gohool.booksfilmslist.classes.Constants
+import com.gohool.booksfilmslist.filmsRoomDatabase.Film
 
 /**
  * A simple [Fragment] subclass.
@@ -22,6 +26,7 @@ class FilmDetailedFragment : Fragment() {
     var description : String? = null
     var year : Int? = null
     var priority : Int? = null
+    var filmId : Int? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,6 +46,7 @@ class FilmDetailedFragment : Fragment() {
         year = arguments?.getInt("year")
         description = arguments?.getString("description")
         priority = arguments?.getInt("priority")
+        filmId = arguments?.getInt("filmId")
 
         val filmTittle = view.findViewById<TextView>(R.id.tittle_detailed)
         val filmYear = view.findViewById<TextView>(R.id.year_detailed)
@@ -70,13 +76,25 @@ class FilmDetailedFragment : Fragment() {
                 bundle.putString("tittle", tittle)
                 bundle.putString("description", description)
                 bundle.putString("type", type)
+                filmId?.let { bundle.putInt("filmId", it) }
                 year?.let { bundle.putInt("year", it) }
                 priority?.let { bundle.putInt("priority", it) }
                 //Toast.makeText(context, item.tittle, Toast.LENGTH_LONG).show()
                 comunicator.nextFragment(Constants.FILM_EDIT_FRAGMENT, bundle)
             }
-            R.id.delete_button->{
-                //deleting item
+            R.id.delete_button-> {
+                var alertDialog = AlertDialog.Builder(context)
+                    .setMessage("Are you sure that you want to delete ${tittle}?")
+                    .setPositiveButton("Yes", DialogInterface.OnClickListener { dialog, which ->
+                        val film = Film(
+                            tittle as String, type as String, year as Int,
+                            priority as Int, description as String
+                        )
+                        film.filmId = filmId as Int
+                        MainActivity.viewModel.deleteFilm(film)
+                        comunicator.nextFragment(Constants.FILMS_FRAGMENT)
+                    }).setNegativeButton("No", DialogInterface.OnClickListener { dialog, which -> })
+                    .show()
             }
         }
         return super.onOptionsItemSelected(item)

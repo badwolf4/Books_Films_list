@@ -1,45 +1,49 @@
 package com.gohool.booksfilmslist.fragments
 
 
+import android.app.Activity
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
-import android.widget.Toast
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gohool.booksfilmslist.Comunicator
 import com.gohool.booksfilmslist.R
+import com.gohool.booksfilmslist.activities.MainActivity
 import com.gohool.booksfilmslist.adapters.FilmsAdapter
 import com.gohool.booksfilmslist.adapters.onFilmItemClickListener
-import com.gohool.booksfilmslist.classes.Book
 import com.gohool.booksfilmslist.classes.Constants
-import com.gohool.booksfilmslist.classes.Film
-import kotlinx.android.synthetic.main.books_fragmet.view.*
+import com.gohool.booksfilmslist.filmsRoomDatabase.Film
+import com.gohool.booksfilmslist.filmsRoomDatabase.FilmsDatabase
 import kotlinx.android.synthetic.main.films_fragment.*
-import kotlinx.android.synthetic.main.films_fragment.view.*
 import kotlinx.android.synthetic.main.films_fragment.view.floating_add_btn
 
 
 class FilmsFragment :  onFilmItemClickListener, Fragment() {
 
-    val films = listOf(
-        Film("Lol", "drama", 2008, 5,"none"),
-        Film("Perfect Strangers", "drama", 2008, 5,"none"),
-        Film("Perfect Strangers", "drama", 2008, 5,"none"),
-        Film("Perfect Strangers", "drama", 2008, 5,"none"),
-        Film("Perfect Strangers", "drama", 2008, 5,"none"),
-        Film("Perfect Strangers", "drama", 2008, 5,"none"),
-        Film("Perfect Strangers", "drama", 2008, 5,"none"),
-        Film("Perfect Strangers", "drama", 2008, 5,"none"),
-        Film("Perfect Strangers", "drama", 2008, 5,"none"),
-        Film("Perfect Strangers", "drama", 2008, 5,"none"),
-        Film("Perfect Strangers", "drama", 2008, 5,"none"),
-        Film("Perfect Strangers", "drama", 2008, 5,"none"),
-        Film("Perfect Strangers", "drama", 2008, 5,"none"),
-        Film("Perfect Strangers", "drama", 2008, 5,"none"),
-        Film("Perfect Strangers", "drama", 2008, 5,"none")
+//    val films = listOf(
+//        Film("Lol", "drama", 2008, 5,"none"),
+//        Film("Perfect Strangers", "drama", 2008, 5,"none"),
+//        Film("Perfect Strangers", "drama", 2008, 5,"none"),
+//        Film("Perfect Strangers", "drama", 2008, 5,"none"),
+//        Film("Perfect Strangers", "drama", 2008, 5,"none"),
+//        Film("Perfect Strangers", "drama", 2008, 5,"none"),
+//        Film("Perfect Strangers", "drama", 2008, 5,"none"),
+//        Film("Perfect Strangers", "drama", 2008, 5,"none"),
+//        Film("Perfect Strangers", "drama", 2008, 5,"none"),
+//        Film("Perfect Strangers", "drama", 2008, 5,"none"),
+//        Film("Perfect Strangers", "drama", 2008, 5,"none"),
+//        Film("Perfect Strangers", "drama", 2008, 5,"none"),
+//        Film("Perfect Strangers", "drama", 2008, 5,"none"),
+//        Film("Perfect Strangers", "drama", 2008, 5,"none"),
+//        Film("Perfect Strangers", "drama", 2008, 5,"none")
+//
+//    )
 
-    )
+    lateinit var films : LiveData<List<Film>>
 
     lateinit var comunicator: Comunicator
 
@@ -47,12 +51,14 @@ class FilmsFragment :  onFilmItemClickListener, Fragment() {
         super.onCreate(savedInstanceState)
         retainInstance = true
         setHasOptionsMenu(true)
+        //films=MainActivity.viewModel.getAllFilms()
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         val view: View = inflater.inflate(R.layout.films_fragment, container, false)
         comunicator = activity as Comunicator
         view.floating_add_btn.setOnClickListener{
@@ -63,10 +69,19 @@ class FilmsFragment :  onFilmItemClickListener, Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        films_recycler_view.apply {
-            layoutManager = LinearLayoutManager(activity)
-            adapter = FilmsAdapter(films,this@FilmsFragment)
-        }
+
+        films = MainActivity.viewModel.getAllFilms()
+        films.observe(viewLifecycleOwner, Observer {
+            Log.d("MyLog: ","Film list updated")
+            if(it.isNotEmpty()){
+                films_recycler_view.apply {
+                    layoutManager = LinearLayoutManager(activity)
+                    adapter = FilmsAdapter(it,this@FilmsFragment)
+
+                }
+                Log.d("MyLog: ","Film list updated")
+            }
+        })
 
     }
 
@@ -83,6 +98,7 @@ class FilmsFragment :  onFilmItemClickListener, Fragment() {
         bundle.putString("type", item.type)
         bundle.putInt("year", item.year)
         bundle.putInt("priority", item.priority)
+        bundle.putInt("filmId", item.filmId)
         //Toast.makeText(context, item.tittle, Toast.LENGTH_LONG).show()
         comunicator.nextFragment(Constants.FILM_DETAILED_FRAGMENT, bundle)
     }
@@ -104,14 +120,16 @@ class FilmsFragment :  onFilmItemClickListener, Fragment() {
                     val text = newText.toLowerCase()
                     var film : Film
 
-                    for(i in 0 until films.size){
-                        film = films.get(i)
-                        if( film.tittle.toLowerCase().contains(text)
-                            or film.type.toLowerCase().contains(text)){
+                    //sortowanie
 
-                            filteredFilms.add(films.get(i))
-                        }
-                    }
+//                    for(i in 0 until films.size){
+//                        film = films.get(i)
+//                        if( film.tittle.toLowerCase().contains(text)
+//                            or film.type.toLowerCase().contains(text)){
+//
+//                            filteredFilms.add(films.get(i))
+//                        }
+//                    }
                 }
                 else{
                     //filteredFilms=films

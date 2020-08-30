@@ -4,16 +4,22 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.gohool.booksfilmslist.Comunicator
 import com.gohool.booksfilmslist.R
 import com.gohool.booksfilmslist.adapters.BookDataBaseHelper
 import com.gohool.booksfilmslist.classes.Constants
-import com.gohool.booksfilmslist.classes.Film
 import com.gohool.booksfilmslist.fragments.*
+import com.gohool.booksfilmslist.viewModels.FilmsViewModel
 
 class MainActivity : AppCompatActivity(), Comunicator {
 
     val manager = supportFragmentManager
+
+    companion object{
+        lateinit var viewModel : FilmsViewModel
+    }
+
 
     override fun nextFragment(c: Constants) {
         val transaction = manager.beginTransaction()
@@ -93,6 +99,10 @@ class MainActivity : AppCompatActivity(), Comunicator {
         val bookDbHelper = BookDataBaseHelper(applicationContext)
         val bookDb = bookDbHelper.writableDatabase
 
+        viewModel = ViewModelProvider
+            .AndroidViewModelFactory
+            .getInstance(application)
+            .create(FilmsViewModel::class.java)
     }
 
     fun showStartFragment()
