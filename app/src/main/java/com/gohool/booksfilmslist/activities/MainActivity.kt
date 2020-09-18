@@ -2,7 +2,9 @@ package com.gohool.booksfilmslist.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.gohool.booksfilmslist.Comunicator
@@ -11,6 +13,8 @@ import com.gohool.booksfilmslist.adapters.BookDataBaseHelper
 import com.gohool.booksfilmslist.classes.Constants
 import com.gohool.booksfilmslist.fragments.*
 import com.gohool.booksfilmslist.viewModels.FilmsViewModel
+import com.google.android.material.navigation.NavigationView
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), Comunicator {
 
@@ -103,6 +107,19 @@ class MainActivity : AppCompatActivity(), Comunicator {
             .AndroidViewModelFactory
             .getInstance(application)
             .create(FilmsViewModel::class.java)
+        val nav_view = findViewById<NavigationView>(R.id.navigation_view)
+        nav_view.setNavigationItemSelectedListener {menuItem->
+
+            when(menuItem.itemId){
+                R.id.books_option -> {
+                    nextFragment(Constants.BOOKS_FRAGMENT)
+                }
+                R.id.films_option -> {
+                    nextFragment(Constants.FILMS_FRAGMENT)
+                }
+            }
+            return@setNavigationItemSelectedListener true
+        }
     }
 
     fun showStartFragment()
