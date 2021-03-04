@@ -1,20 +1,21 @@
 package com.gohool.booksfilmslist.viewHolders
 
-import android.database.sqlite.SQLiteDatabase
-import android.os.Bundle
-import android.provider.BaseColumns
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.cardview.widget.CardView
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.gohool.booksfilmslist.Comunicator
 import com.gohool.booksfilmslist.R
-import com.gohool.booksfilmslist.adapters.TableInfo
-import com.gohool.booksfilmslist.adapters.onBookItemClickListener
-import com.gohool.booksfilmslist.classes.Book
+import com.gohool.booksfilmslist.data.books.Book
+import com.gohool.booksfilmslist.ui.fragments.BooksFragmetDirections
+import com.gohool.booksfilmslist.viewModels.BookViewModel
+import kotlinx.android.synthetic.main.film_item.view.*
 
 class BookViewHolder(inflater:LayoutInflater, parent: ViewGroup) :RecyclerView.ViewHolder(inflater.inflate(
     R.layout.book_item,parent, false)) {
@@ -34,36 +35,40 @@ class BookViewHolder(inflater:LayoutInflater, parent: ViewGroup) :RecyclerView.V
 
             }
 
-    fun bind(action: onBookItemClickListener, book : Book){
-        Log.d("MyLog", "Book tittle: ${book.tittle}")
+    fun bind(book : Book, viewModel: BookViewModel){
+        Log.d("MyLog", "Book tittle: ${book.title}")
 
-                mTittleView?.text = book.tittle
+                mTittleView?.text = book.title
                 mAuthorView?.text = book.author
                 mPriorityView?.text = book.priority.toString()
 
 
-                itemView.setOnClickListener{
-                    action.onItemClick(book,adapterPosition.plus(1))
+                itemView.findViewById<CardView>(R.id.book_cardView).setOnClickListener{
+                    Log.d("PassingBoookId: ","id is ${book.id}")
+                    Log.d("PassingBoookId: ","Trying to pass id")
+                    Log.d("MyLog ","Some stupid log")
+                    val action = BooksFragmetDirections.actionBooksFragmetToBookDetailedFragment(bookid = book.id)
+                    itemView.findNavController().navigate(action)
+
+                }
+
+                itemView.delete_item.setOnClickListener{
+                    AlertDialog.Builder(itemView.context)
+                        .setMessage("Are you sure that you want to delete?")
+                        .setPositiveButton("Yes", DialogInterface.OnClickListener{ dialog, which ->
+                            viewModel.deleteBook(book)
+                            Toast.makeText(itemView.context,"Book deleted", Toast.LENGTH_SHORT).show()
+                        })
+                        .setNegativeButton("No", DialogInterface.OnClickListener { dialog, which ->
+                        })
+                        .show()
                 }
 
 
 
+
+
         }
-
-//      bookCardView?.setOnClickListener {
-//          val bundle = Bundle()
-//
-//          bundle.putString("tittle", book.tittle)
-//          bundle.putString("author",book.author)
-//          bundle.putString("description",book.description)
-//          bundle.putString("type",book.type)
-//          bundle.putInt("priority",book.priority)
-//
-//
-//          comunicator.nextDetailedBookItemFragment(bundle)
-//            Toast.makeText(itemView.context, mTittleView?.text, Toast.LENGTH_SHORT).show()
-//        }
-
 
 
 

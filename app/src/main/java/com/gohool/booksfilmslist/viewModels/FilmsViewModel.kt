@@ -2,35 +2,44 @@ package com.gohool.booksfilmslist.viewModels
 
 import android.app.Application
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import com.gohool.booksfilmslist.filmsRoomDatabase.Film
-import com.gohool.booksfilmslist.filmsRoomDatabase.FilmsRepository
+import androidx.lifecycle.*
+import com.gohool.booksfilmslist.data.films.Film
+import com.gohool.booksfilmslist.data.films.FilmsRepository
+
 import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
-class FilmsViewModel(application: Application) : AndroidViewModel(application) {
-    private var filmsRepository : FilmsRepository = FilmsRepository(application)
+class FilmsViewModel(
+    private val filmsRepository: FilmsRepository
+) : ViewModel() {
 
-    private var allFilms : Deferred<LiveData<List<Film>>> =
-        filmsRepository.getAllFilmsAsync()
+    val allFilms = filmsRepository.allFilms.asLiveData()
 
-    fun insertFilm(film: Film){
-        Log.d("RoomLog: ", "Go to film reposiotory ")
-        filmsRepository.insertFilm(film)
-        Log.d("RoomLog: ", "Back from film reposiotory ")
+    fun insertFilm(film: Film) = viewModelScope.launch { filmsRepository.insertFilm(film)  }
+
+    fun updateFilm(film : Film) = viewModelScope.launch { filmsRepository.upDateFilm(film) }
+
+    fun deleteFilm(film: Film) = viewModelScope.launch { filmsRepository.deleteFilm(film) }
+    fun getFilmById(filmId: Int) :LiveData<Film> =   filmsRepository.getFilmById(filmId).asLiveData()
+    fun search(s : String) {
+
+//        allFilms = LiveDataTransformations.switchMap(searchStringLiveData, string ->
+//        repo.loadData(string)))
     }
 
-    fun updateFilm(film : Film){
-        filmsRepository.upDateFilm(film)
-    }
 
-    fun deleteFilm(film: Film){
-        filmsRepository.deleteFilm(film)
-    }
 
-    fun getAllFilms() : LiveData<List<Film>> = runBlocking{
-        allFilms.await()
+}
+
+class FilmsViewModelFactory(private  val repository: FilmsRepository) : ViewModelProvider.Factory {
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        if(modelClass.isAssignableFrom(FilmsViewModel::class.java)){
+            @Suppress("UNCHECKED_CAST")
+            return FilmsViewModel(repository) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
     }
 
 }

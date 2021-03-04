@@ -1,4 +1,4 @@
-package com.gohool.booksfilmslist.classes
+package com.gohool.booksfilmslist.data
 
 //data class Constants (
 //    val BOOK_DETAILED_FRAGMENT : Int = 1,

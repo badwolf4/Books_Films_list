@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout>
+<!--    <data>-->
+<!--        <variable-->
+<!--            name="Book"-->
+<!--            type="com.gohool.booksfilmslist.data.books.Book" />-->
+<!--    </data>-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".fragments.BookDetailedFragment">
+    tools:context=".ui.fragments.BookDetailedFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -99,3 +105,4 @@
 
 
 </LinearLayout>
+</layout>

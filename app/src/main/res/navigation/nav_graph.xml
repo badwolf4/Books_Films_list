@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph.xml"
+    app:startDestination="@id/startFragment">
+
+    <fragment
+        android:id="@+id/startFragment"
+        android:name="com.gohool.booksfilmslist.ui.fragments.StartFragment"
+        android:label="fragment_start"
+        tools:layout="@layout/fragment_start" >
+        <action
+            android:id="@+id/action_startFragment_to_booksFragmet"
+            app:destination="@id/booksFragmet" />
+        <action
+            android:id="@+id/action_startFragment_to_filmsFragment2"
+            app:destination="@id/filmsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/booksFragmet"
+        android:name="com.gohool.booksfilmslist.ui.fragments.BooksFragmet"
+        android:label="books_fragmet"
+        tools:layout="@layout/books_fragmet" >
+        <action
+            android:id="@+id/action_booksFragmet_to_bookEditFragment"
+            app:destination="@id/bookEditFragment" />
+        <action
+            android:id="@+id/action_booksFragmet_to_bookDetailedFragment"
+            app:destination="@id/bookDetailedFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/filmsFragment"
+        android:name="com.gohool.booksfilmslist.ui.fragments.FilmsFragment"
+        android:label="films_fragment"
+        tools:layout="@layout/films_fragment" >
+        <action
+            android:id="@+id/action_filmsFragment_to_filmEditFragment"
+            app:destination="@id/filmEditFragment" />
+        <action
+            android:id="@+id/action_filmsFragment_to_filmDetailedFragment"
+            app:destination="@id/filmDetailedFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/bookEditFragment"
+        android:name="com.gohool.booksfilmslist.ui.fragments.BookEditFragment"
+        android:label="fragment_add_book"
+        tools:layout="@layout/fragment_add_book" >
+        <argument
+            android:name="bookid"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/bookDetailedFragment"
+        android:name="com.gohool.booksfilmslist.ui.fragments.BookDetailedFragment"
+        android:label="BookDetailedFragment" >
+        <action
+            android:id="@+id/action_bookDetailedFragment_to_bookEditFragment2"
+            app:destination="@id/bookEditFragment" />
+        <argument
+            android:name="bookid"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/filmEditFragment"
+        android:name="com.gohool.booksfilmslist.ui.fragments.FilmEditFragment"
+        android:label="fragment_add_film"
+        tools:layout="@layout/fragment_add_film" >
+        <argument
+            android:name="filmid"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/filmDetailedFragment"
+        android:name="com.gohool.booksfilmslist.ui.fragments.FilmDetailedFragment"
+        android:label="fragment_film_detailed"
+        tools:layout="@layout/fragment_film_detailed" >
+        <action
+            android:id="@+id/action_filmDetailedFragment_to_filmEditFragment"
+            app:destination="@id/filmEditFragment" />
+        <argument
+            android:name="filmid"
+            app:argType="integer" />
+    </fragment>
+</navigation>

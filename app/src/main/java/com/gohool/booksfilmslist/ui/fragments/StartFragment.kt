@@ -1,4 +1,4 @@
-package com.gohool.booksfilmslist.fragments
+package com.gohool.booksfilmslist.ui.fragments
 
 
 import android.os.Bundle
@@ -6,9 +6,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.gohool.booksfilmslist.Comunicator
+import androidx.navigation.findNavController
 import com.gohool.booksfilmslist.R
-import com.gohool.booksfilmslist.classes.Constants
 import kotlinx.android.synthetic.main.fragment_start.view.*
 
 /**
@@ -16,7 +15,6 @@ import kotlinx.android.synthetic.main.fragment_start.view.*
  */
 class StartFragment : Fragment() {
 
-    lateinit var comunicator: Comunicator
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,13 +27,16 @@ class StartFragment : Fragment() {
         val view : View = inflater.inflate(R.layout.fragment_start, container, false)
         // Inflate the layout for this fragment
 
-        comunicator = activity as Comunicator
         view.booksButton.setOnClickListener{
-            comunicator.nextFragment(Constants.BOOKS_FRAGMENT)
+            //comunicator.nextFragment(Constants.BOOKS_FRAGMENT)
+            val action = StartFragmentDirections.actionStartFragmentToBooksFragmet()
+            view.findNavController().navigate(action)
         }
 
         view.filmsButton.setOnClickListener{
-            comunicator.nextFragment(Constants.FILMS_FRAGMENT)
+            //comunicator.nextFragment(Constants.FILMS_FRAGMENT)
+            val action = StartFragmentDirections.actionStartFragmentToFilmsFragment2()
+            view.findNavController().navigate(action)
         }
 
         return view

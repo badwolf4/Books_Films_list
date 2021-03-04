@@ -1,4 +1,4 @@
-package com.gohool.booksfilmslist.filmsRoomDatabase
+package com.gohool.booksfilmslist.data.films
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
@@ -6,8 +6,6 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName="films_table")
 data class Film (
-//    @PrimaryKey
-//    var filmId : Int,
 
     @ColumnInfo(name = "tittle")
     val tittle : String,
@@ -25,6 +23,7 @@ data class Film (
     val description : String
 ){
     @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "filmId")
     var filmId : Int = 0
 }
 
